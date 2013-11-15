@@ -44,10 +44,15 @@ using std::cout;
 
 string Porter2Stemmer::stem(const string & toStem)
 {
-    if(toStem.size() <= 2)
+    // special case short words or sentence tags
+    if(toStem.size() <= 2 || toStem == "<s>" || toStem == "</s>")
         return toStem;
 
     string word = toStem;
+
+    // max word length is 35 for English
+    if(word.size() > 35)
+        word = word.substr(0, 35);
 
     if(word[0] == '\'')
         word = word.substr(1, word.size() - 1);
@@ -80,6 +85,9 @@ string Porter2Stemmer::stem(const string & toStem)
 
 string Porter2Stemmer::trim(const string & toStem)
 {
+    if(toStem == "<s>" || toStem == "</s>")
+        return toStem;
+
     string word = "";
     for(auto ch: toStem)
     {
