@@ -276,7 +276,7 @@ void Porter2Stemmer::internal::step1C(string & word)
 */
 void Porter2Stemmer::internal::step2(string & word, int startR1)
 {
-    const vector<pair<string, string>> subs = {
+    static const vector<pair<string, string>> subs = {
         {"ational", "ate"}, {"tional", "tion"}, {"enci", "ence"}, {"anci", "ance"},
         {"abli", "able"}, {"entli", "ent"}, {"izer", "ize"}, {"ization", "ize"},
         {"ation", "ate"}, {"ator", "ate"}, {"alism", "al"}, {"aliti", "al"},
@@ -314,7 +314,7 @@ void Porter2Stemmer::internal::step2(string & word, int startR1)
 */
 void Porter2Stemmer::internal::step3(string & word, int startR1, int startR2)
 {
-    const vector<pair<string, string>> subs = {
+    static const vector<pair<string, string>> subs = {
         {"ational", "ate"}, {"tional", "tion"}, {"alize", "al"}, {"icate", "ic"},
         {"iciti", "ic"}, {"ical", "ic"}, {"ful", ""}, {"ness", ""}
     };
@@ -339,7 +339,7 @@ void Porter2Stemmer::internal::step3(string & word, int startR1, int startR2)
 */
 void Porter2Stemmer::internal::step4(string & word, int startR2)
 {
-    const vector<pair<string, string>> subs = {
+    static const vector<pair<string, string>> subs = {
         {"al", ""}, {"ance", ""}, {"ence", ""}, {"er", ""}, {"ic", ""},
         {"able", ""}, {"ible", ""}, {"ant", ""}, {"ement", ""}, {"ment", ""},
         {"ism", ""}, {"ate", ""}, {"iti", ""}, {"ous", ""}, {"ive", ""}, {"ize", ""}
@@ -405,7 +405,7 @@ bool Porter2Stemmer::internal::isShort(const string & word)
 
 bool Porter2Stemmer::internal::special(string & word)
 {
-    const std::unordered_map<string, string> exceptions = {
+    static const std::unordered_map<string, string> exceptions = {
         {"skis", "ski"}, {"skies", "sky"}, {"dying", "die"}, {"lying", "lie"},
         {"tying", "tie"}, {"idly", "idl"}, {"gently", "gentl"}, {"ugly", "ugli"},
         {"early", "earli"}, {"only", "onli"}, {"singly", "singl"}
