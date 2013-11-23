@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     bool mistake = false;
     while(in >> toStem >> stemmed)
     {
+        Porter2Stemmer::trim(toStem);
         Porter2Stemmer::stem(toStem);
         if(toStem != stemmed)
         {
