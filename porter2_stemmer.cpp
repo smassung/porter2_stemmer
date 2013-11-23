@@ -42,13 +42,11 @@ using std::stringstream;
 using std::endl;
 using std::cout;
 
-string Porter2Stemmer::stem(const string & toStem)
+void Porter2Stemmer::stem(string & word)
 {
     // special case short words or sentence tags
-    if(toStem.size() <= 2 || toStem == "<s>" || toStem == "</s>")
-        return toStem;
-
-    string word = toStem;
+    if(word.size() <= 2 || word == "<s>" || word == "</s>")
+        return;
 
     // max word length is 35 for English
     if(word.size() > 35)
@@ -58,7 +56,7 @@ string Porter2Stemmer::stem(const string & toStem)
         word = word.substr(1, word.size() - 1);
 
     if(special(word))
-        return word;
+        return;
 
     changeY(word);
     int startR1 = getStartR1(word);
@@ -69,7 +67,7 @@ string Porter2Stemmer::stem(const string & toStem)
     if(step1A(word))
     {
         std::replace(word.begin(), word.end(), 'Y', 'y');
-        return word;
+        return;
     }
     
     step1B(word, startR1);
@@ -80,23 +78,18 @@ string Porter2Stemmer::stem(const string & toStem)
     step5(word, startR1, startR2);
 
     std::replace(word.begin(), word.end(), 'Y', 'y');
-    return word;
+    return;
 }
 
-string Porter2Stemmer::trim(const string & toStem)
+void Porter2Stemmer::trim(string & word)
 {
-    if(toStem == "<s>" || toStem == "</s>")
-        return toStem;
+    if(word == "<s>" || word == "</s>")
+        return;
 
-    string word = "";
-    for(auto ch: toStem)
-    {
-        if(ch >= 'A' && ch <= 'Z')
-            ch += 32;
-        if((ch >= 'a' && ch <= 'z') || ch == '\'')
-            word += ch;
-    }
-    return word;
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+    std::remove_if(word.begin(), word.end(), [](char ch) {
+        return !((ch >= 'a' && ch <= 'z') || ch == '\'');
+    });
 }
 
 int Porter2Stemmer::internal::getStartR1(const string & word)

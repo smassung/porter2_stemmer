@@ -23,14 +23,21 @@ int main(int argc, char* argv[])
 {
     std::ifstream in("diffs.txt");
     string toStem, stemmed;
+    bool mistake = false;
     while(in >> toStem >> stemmed)
     {
-        cout << "to stem: " << toStem << endl;
-        cout << "stemmed: " << stemmed << endl;
-        if(Porter2Stemmer::stem(toStem) == stemmed)
-            cout << "  OK" << endl << endl;
-        else
+        Porter2Stemmer::stem(toStem);
+        if(toStem != stemmed)
+        {
             cout << "  incorrect!" << endl << endl;
+            cout << "to stem: " << toStem << endl;
+            cout << "stemmed: " << stemmed << endl;
+            mistake = true;
+        }
     }
+
+    if(!mistake)
+        cout << "Passed all tests!" << endl;
+
     return 0;
 }

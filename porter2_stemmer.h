@@ -35,9 +35,9 @@
 
 namespace Porter2Stemmer
 {
-    std::string stem(const std::string & toStem);
+    void stem(std::string & word);
 
-    std::string trim(const std::string & word);
+    void trim(std::string & word);
 
     namespace internal
     {
