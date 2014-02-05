@@ -39,7 +39,7 @@ namespace Porter2Stemmer
 
     void trim(std::string & word);
 
-    namespace size_ternal
+    namespace internal
     {
         size_t firstNonVowelAfterVowel(const std::string & word, size_t start);
 
