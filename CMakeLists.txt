@@ -34,7 +34,7 @@ endif()
 
 add_library(porter2-stemmer porter2_stemmer.cpp)
 target_include_directories(porter2-stemmer PUBLIC ${PROJECT_SOURCE_DIR})
-target_compile_options(porter2-stemmer PUBLIC -std=c++11 ${LIBCXX_OPTIONS})
+target_compile_options(porter2-stemmer PRIVATE -std=c++11 PUBLIC ${LIBCXX_OPTIONS})
 target_link_libraries(porter2-stemmer ${LIBCXX_LIBRARY} ${CXXABI_LIBRARY})
 
 add_executable(stem main.cpp)
