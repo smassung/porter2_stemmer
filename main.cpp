@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
 #include "porter2_stemmer.h"
 
 int main(int argc, char* argv[])
@@ -21,6 +22,8 @@ int main(int argc, char* argv[])
     std::string to_stem;
     std::string stemmed;
     bool mistake = false;
+    using timer = std::chrono::high_resolution_clock;
+    timer::time_point start_time = timer::now();
     while (in >> to_stem >> stemmed)
     {
         Porter2Stemmer::stem(to_stem);
@@ -33,7 +36,12 @@ int main(int argc, char* argv[])
             mistake = true;
         }
     }
+    timer::time_point end_time = timer::now();
 
     if (!mistake)
         std::cout << "Passed all tests!" << std::endl;
+
+    std::cout << "Time elapsed: "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     end_time - start_time).count() << "ms" << std::endl;
 }
