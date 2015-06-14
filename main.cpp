@@ -15,30 +15,25 @@
 #include <string>
 #include "porter2_stemmer.h"
 
-using std::cout;
-using std::endl;
-using std::string;
-
 int main(int argc, char* argv[])
 {
-    std::ifstream in("diffs.txt");
-    string toStem, stemmed;
+    std::ifstream in{"diffs.txt"};
+    std::string to_stem;
+    std::string stemmed;
     bool mistake = false;
-    while (in >> toStem >> stemmed)
+    while (in >> to_stem >> stemmed)
     {
-        Porter2Stemmer::stem(toStem);
-        if (toStem != stemmed)
+        Porter2Stemmer::stem(to_stem);
+        if (to_stem != stemmed)
         {
-            cout << "  incorrect!" << endl
-                 << endl;
-            cout << "to stem: " << toStem << endl;
-            cout << "stemmed: " << stemmed << endl;
+            std::cout << "  incorrect!" << std::endl
+                      << std::endl
+                      << "to stem: " << to_stem << std::endl
+                      << "stemmed: " << stemmed << std::endl;
             mistake = true;
         }
     }
 
     if (!mistake)
-        cout << "Passed all tests!" << endl;
-
-    return 0;
+        std::cout << "Passed all tests!" << std::endl;
 }
