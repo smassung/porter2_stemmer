@@ -489,7 +489,7 @@ bool Porter2Stemmer::internal::isVowel(char ch)
 }
 
 bool Porter2Stemmer::internal::endsWith(const std::string& word,
-                                        const std::string& str)
+                                        meta::util::string_view str)
 {
     return word.size() >= str.size()
            && std::equal(word.begin() + (word.size() - str.size()), word.end(),
@@ -511,18 +511,20 @@ bool Porter2Stemmer::internal::endsInDouble(const std::string& word)
     return false;
 }
 
-bool Porter2Stemmer::internal::replaceIfExists(std::string& word,
-                                               const std::string& suffix,
-                                               const std::string& replacement,
-                                               size_t start)
+bool Porter2Stemmer::internal::replaceIfExists(
+    std::string& word, meta::util::string_view suffix,
+    meta::util::string_view replacement, size_t start)
 {
+    if (suffix.size() > word.size())
+        return false;
+
     size_t idx = word.size() - suffix.size();
     if (idx < start)
         return false;
 
     if (std::equal(word.begin() + idx, word.end(), suffix.begin()))
     {
-        word = word.substr(0, word.size() - suffix.size()) + replacement;
+        word.replace(idx, suffix.size(), replacement.data());
         return true;
     }
     return false;
