@@ -84,10 +84,13 @@ void Porter2Stemmer::trim(std::string& word)
         return;
 
     std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-    std::remove_if(word.begin(), word.end(), [](char ch)
-                   {
-                       return !((ch >= 'a' && ch <= 'z') || ch == '\'');
-                   });
+    auto it
+        = std::remove_if(word.begin(), word.end(), [](char ch)
+                         {
+                             return !((ch >= 'a' && ch <= 'z') || ch == '\'');
+                         });
+
+    word.erase(it, word.end());
 }
 
 size_t Porter2Stemmer::internal::getStartR1(const std::string& word)

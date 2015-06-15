@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     timer::time_point start_time = timer::now();
     while (in >> to_stem >> stemmed)
     {
+        Porter2Stemmer::trim(to_stem);
         Porter2Stemmer::stem(to_stem);
         if (to_stem != stemmed)
         {
