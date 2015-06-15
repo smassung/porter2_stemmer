@@ -13,32 +13,36 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
 #include "porter2_stemmer.h"
-
-using std::cout;
-using std::endl;
-using std::string;
 
 int main(int argc, char* argv[])
 {
-    std::ifstream in("diffs.txt");
-    string toStem, stemmed;
+    std::ifstream in{"diffs.txt"};
+    std::string to_stem;
+    std::string stemmed;
     bool mistake = false;
-    while(in >> toStem >> stemmed)
+    using timer = std::chrono::high_resolution_clock;
+    timer::time_point start_time = timer::now();
+    while (in >> to_stem >> stemmed)
     {
-        Porter2Stemmer::trim(toStem);
-        Porter2Stemmer::stem(toStem);
-        if(toStem != stemmed)
+        Porter2Stemmer::trim(to_stem);
+        Porter2Stemmer::stem(to_stem);
+        if (to_stem != stemmed)
         {
-            cout << "  incorrect!" << endl << endl;
-            cout << "to stem: " << toStem << endl;
-            cout << "stemmed: " << stemmed << endl;
+            std::cout << "  incorrect!" << std::endl
+                      << std::endl
+                      << "to stem: " << to_stem << std::endl
+                      << "stemmed: " << stemmed << std::endl;
             mistake = true;
         }
     }
+    timer::time_point end_time = timer::now();
 
-    if(!mistake)
-        cout << "Passed all tests!" << endl;
+    if (!mistake)
+        std::cout << "Passed all tests!" << std::endl;
 
-    return 0;
+    std::cout << "Time elapsed: "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     end_time - start_time).count() << "ms" << std::endl;
 }
