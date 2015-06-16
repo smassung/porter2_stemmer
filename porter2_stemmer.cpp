@@ -9,17 +9,14 @@
  * Copyright (C) 2012 Sean Massung
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- *of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to
- *do
- * so, subject to the following conditions:
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
- *all
- * copies or substantial portions of the Software.
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -144,7 +141,7 @@ void Porter2Stemmer::internal::changeY(std::string& word)
     }
 }
 
-/**
+/*
   Step 0
 */
 void Porter2Stemmer::internal::step0(std::string& word)
@@ -154,7 +151,7 @@ void Porter2Stemmer::internal::step0(std::string& word)
         || replaceIfExists(word, "'", "", 0);
 }
 
-/**
+/*
   Step 1a:
 
   sses
@@ -201,7 +198,7 @@ bool Porter2Stemmer::internal::step1A(std::string& word)
            || word == "exceed" || word == "succeed";
 }
 
-/**
+/*
   Step 1b:
 
   eed   eedly
@@ -243,7 +240,7 @@ void Porter2Stemmer::internal::step1B(std::string& word, size_t startR1)
     }
 }
 
-/**
+/*
   Step 1c:
 
   Replace suffix y or Y by i if preceded by a non-vowel which is not the first
@@ -257,7 +254,7 @@ void Porter2Stemmer::internal::step1C(std::string& word)
             word[size - 1] = 'i';
 }
 
-/**
+/*
   Step 2:
 
   If found and in R1, perform the action indicated.
@@ -326,7 +323,7 @@ void Porter2Stemmer::internal::step2(std::string& word, size_t startR1)
     }
 }
 
-/**
+/*
   Step 3:
 
   If found and in R1, perform the action indicated.
@@ -358,7 +355,7 @@ void Porter2Stemmer::internal::step3(std::string& word, size_t startR1,
     replaceIfExists(word, "ative", "", startR2);
 }
 
-/**
+/*
   Step 4:
 
   If found and in R2, perform the action indicated.
@@ -403,7 +400,7 @@ void Porter2Stemmer::internal::step4(std::string& word, size_t startR2)
         || replaceIfExists(word, "tion", "t", startR2 - 1);
 }
 
-/**
+/*
   Step 5:
 
   e     delete if in R2, or in R1 and not preceded by a short syllable
@@ -427,14 +424,14 @@ void Porter2Stemmer::internal::step5(std::string& word, size_t startR1,
     }
 }
 
-/**
- * Determines whether a word ends in a short syllable.
- * Define a short syllable in a word as either
- *
- * (a) a vowel followed by a non-vowel other than w, x or Y and preceded by a
- *non-vowel
- * (b) a vowel at the beginning of the word followed by a non-vowel.
- */
+/*
+  Determines whether a word ends in a short syllable.
+  Define a short syllable in a word as either
+
+  (a) a vowel followed by a non-vowel other than w, x or Y and preceded by a
+      non-vowel
+  (b) a vowel at the beginning of the word followed by a non-vowel.
+*/
 bool Porter2Stemmer::internal::isShort(const std::string& word)
 {
     size_t size = word.size();
