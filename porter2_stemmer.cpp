@@ -194,9 +194,10 @@ bool Porter2Stemmer::internal::step1A(std::string& word)
     }
 
     // special case after step 1a
-    return word == "inning" || word == "outing" || word == "canning"
-           || word == "herring" || word == "earring" || word == "proceed"
-           || word == "exceed" || word == "succeed";
+    return (word.size() == 6 || word.size() == 7)
+           && (word == "inning" || word == "outing" || word == "canning"
+               || word == "herring" || word == "earring" || word == "proceed"
+               || word == "exceed" || word == "succeed");
 }
 
 /**
@@ -472,8 +473,10 @@ bool Porter2Stemmer::internal::special(std::string& word)
     }
 
     // invariants
-    return word == "sky" || word == "news" || word == "howe" || word == "atlas"
-           || word == "cosmos" || word == "bias" || word == "andes";
+    return word.size() >= 3 && word.size() <= 5
+           && (word == "sky" || word == "news" || word == "howe"
+               || word == "atlas" || word == "cosmos" || word == "bias"
+               || word == "andes");
 }
 
 bool Porter2Stemmer::internal::isVowelY(char ch)
