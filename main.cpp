@@ -26,14 +26,16 @@ int main()
     timer::time_point start_time = timer::now();
     while (in >> to_stem >> stemmed)
     {
+        std::string orig = to_stem;
         Porter2Stemmer::trim(to_stem);
         Porter2Stemmer::stem(to_stem);
         if (to_stem != stemmed)
         {
             std::cout << "  incorrect!" << std::endl
                       << std::endl
-                      << "to stem: " << to_stem << std::endl
-                      << "stemmed: " << stemmed << std::endl;
+                      << "to stem:  " << orig    << std::endl
+                      << "stemmed:  " << to_stem << std::endl
+                      << "expected: " << stemmed << std::endl;
             mistake = true;
         }
     }
