@@ -32,8 +32,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <iostream>
-#include <sstream>
 #include <unordered_map>
 #include "porter2_stemmer.h"
 
@@ -281,29 +279,29 @@ void Porter2Stemmer::internal::step1C(std::string& word)
 */
 void Porter2Stemmer::internal::step2(std::string& word, size_t startR1)
 {
-    static const std::vector<std::pair<std::string, std::string>> subs
-        = {{"ational", "ate"},
-           {"tional", "tion"},
-           {"enci", "ence"},
-           {"anci", "ance"},
-           {"abli", "able"},
-           {"entli", "ent"},
-           {"izer", "ize"},
-           {"ization", "ize"},
-           {"ation", "ate"},
-           {"ator", "ate"},
-           {"alism", "al"},
-           {"aliti", "al"},
-           {"alli", "al"},
-           {"fulness", "ful"},
-           {"ousli", "ous"},
-           {"ousness", "ous"},
-           {"iveness", "ive"},
-           {"iviti", "ive"},
-           {"biliti", "ble"},
-           {"bli", "ble"},
-           {"fulli", "ful"},
-           {"lessli", "less"}};
+    static const std::pair<meta::util::string_view, meta::util::string_view>
+        subs[] = {{"ational", "ate"},
+                  {"tional", "tion"},
+                  {"enci", "ence"},
+                  {"anci", "ance"},
+                  {"abli", "able"},
+                  {"entli", "ent"},
+                  {"izer", "ize"},
+                  {"ization", "ize"},
+                  {"ation", "ate"},
+                  {"ator", "ate"},
+                  {"alism", "al"},
+                  {"aliti", "al"},
+                  {"alli", "al"},
+                  {"fulness", "ful"},
+                  {"ousli", "ous"},
+                  {"ousness", "ous"},
+                  {"iveness", "ive"},
+                  {"iviti", "ive"},
+                  {"biliti", "ble"},
+                  {"bli", "ble"},
+                  {"fulli", "ful"},
+                  {"lessli", "less"}};
 
     for (auto& sub : subs)
         if (replaceIfExists(word, sub.first, sub.second, startR1))
@@ -341,15 +339,15 @@ void Porter2Stemmer::internal::step2(std::string& word, size_t startR1)
 void Porter2Stemmer::internal::step3(std::string& word, size_t startR1,
                                      size_t startR2)
 {
-    static const std::vector<std::pair<std::string, std::string>> subs
-        = {{"ational", "ate"},
-           {"tional", "tion"},
-           {"alize", "al"},
-           {"icate", "ic"},
-           {"iciti", "ic"},
-           {"ical", "ic"},
-           {"ful", ""},
-           {"ness", ""}};
+    static const std::pair<meta::util::string_view, meta::util::string_view>
+        subs[] = {{"ational", "ate"},
+                  {"tional", "tion"},
+                  {"alize", "al"},
+                  {"icate", "ic"},
+                  {"iciti", "ic"},
+                  {"ical", "ic"},
+                  {"ful", ""},
+                  {"ness", ""}};
 
     for (auto& sub : subs)
         if (replaceIfExists(word, sub.first, sub.second, startR1))
@@ -371,23 +369,23 @@ void Porter2Stemmer::internal::step3(std::string& word, size_t startR1,
 */
 void Porter2Stemmer::internal::step4(std::string& word, size_t startR2)
 {
-    static const std::vector<std::pair<std::string, std::string>> subs
-        = {{"al", ""},
-           {"ance", ""},
-           {"ence", ""},
-           {"er", ""},
-           {"ic", ""},
-           {"able", ""},
-           {"ible", ""},
-           {"ant", ""},
-           {"ement", ""},
-           {"ment", ""},
-           {"ism", ""},
-           {"ate", ""},
-           {"iti", ""},
-           {"ous", ""},
-           {"ive", ""},
-           {"ize", ""}};
+    static const std::pair<meta::util::string_view, meta::util::string_view>
+        subs[] = {{"al", ""},
+                  {"ance", ""},
+                  {"ence", ""},
+                  {"er", ""},
+                  {"ic", ""},
+                  {"able", ""},
+                  {"ible", ""},
+                  {"ant", ""},
+                  {"ement", ""},
+                  {"ment", ""},
+                  {"ism", ""},
+                  {"ate", ""},
+                  {"iti", ""},
+                  {"ous", ""},
+                  {"ive", ""},
+                  {"ize", ""}};
 
     for (auto& sub : subs)
         if (replaceIfExists(word, sub.first, sub.second, startR2))
@@ -451,7 +449,8 @@ bool Porter2Stemmer::internal::isShort(const std::string& word)
 
 bool Porter2Stemmer::internal::special(std::string& word)
 {
-    static const std::unordered_map<std::string, std::string> exceptions
+    static const std::unordered_map<meta::util::string_view,
+                                    meta::util::string_view> exceptions
         = {{"skis", "ski"},
            {"skies", "sky"},
            {"dying", "die"},
@@ -468,7 +467,7 @@ bool Porter2Stemmer::internal::special(std::string& word)
     auto ex = exceptions.find(word);
     if (ex != exceptions.end())
     {
-        word = ex->second;
+        word = ex->second.to_string();
         return true;
     }
 
