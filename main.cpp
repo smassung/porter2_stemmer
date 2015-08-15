@@ -16,7 +16,7 @@
 #include <chrono>
 #include "porter2_stemmer.h"
 
-int main(int argc, char* argv[])
+int main()
 {
     std::ifstream in{"diffs.txt"};
     std::string to_stem;
