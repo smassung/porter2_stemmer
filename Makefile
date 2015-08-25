@@ -1,8 +1,8 @@
 EXE = stem
 OBJS = porter2_stemmer.o
-CC = clang++ -std=c++11 -Wall -pedantic
+CC = clang++ -std=c++11 -Wall -pedantic -I.
 CCOPTS = -O3
-LINKER = clang++ -std=c++11 -Wall -pedantic
+LINKER = clang++ -std=c++11 -Wall -pedantic -I.
 
 all: $(EXE)
 
