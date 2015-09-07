@@ -103,12 +103,41 @@ if(UNIX OR MINGW)
     endif()
 endif()
 
+
+
 add_library(porter2-stemmer porter2_stemmer.cpp)
 target_include_directories(porter2-stemmer PUBLIC ${PROJECT_SOURCE_DIR})
 target_compile_options(porter2-stemmer PUBLIC ${STDOPT})
 
+check_cxx_source_compiles("
+#include <experimental/string_view>
+int main() {
+    std::experimental::string_view sv = \"hello world\";
+    return 0;
+}" META_HAS_EXPERIMENTAL_STRING_VIEW)
+
+if (META_HAS_EXPERIMENTAL_STRING_VIEW)
+  target_compile_definitions(porter2-stemmer PUBLIC
+                             -DMETA_HAS_EXPERIMENTAL_STRING_VIEW)
+endif()
+
+# work around a bug in libstdc++ provided with gcc < 4.8.3 where a static
+# assertion fires when you have a non-empty hash functor
+check_cxx_source_compiles("
+#include <unordered_set>
+struct nonempty_hasher : public std::hash<int> { int i = 3; };
+int main() {
+    std::unordered_set<int, nonempty_hasher> s;
+    return 0;
+}" META_HAS_NONEMPTY_HASH_SUPPORT)
+
+if (META_HAS_NONEMPTY_HASH_SUPPORT)
+  target_compile_definitions(porter2-stemmer PUBLIC
+                             -DMETA_HAS_NONEMPTY_HASH_SUPPORT)
+endif()
+
 if (HAS_CXX14 OR HAS_CXX1Y)
-    target_compile_definitions(porter2-stemmer INTERFACE -DMETA_HAS_CXX14=1)
+    target_compile_definitions(porter2-stemmer PUBLIC -DMETA_HAS_CXX14=1)
 endif()
 
 if(LIBDL_LIBRARY)
