@@ -74,7 +74,7 @@ bool isVowel(char ch);
 
 bool isVowelY(char ch);
 
-bool endsWith(const std::string& word, meta::util::string_view str);
+bool endsWith(meta::util::string_view word, meta::util::string_view str);
 
 bool endsInDouble(const std::string& word);
 
