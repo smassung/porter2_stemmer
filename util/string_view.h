@@ -235,11 +235,6 @@ class basic_string_view
                    : basic_string_view{data() + pos, std::min(n, size() - pos)};
     }
 
-    constexpr bool operator==(const basic_string_view& rhs) const noexcept
-    {
-        return compare(rhs) == 0;
-    }
-
     int compare(basic_string_view s) const noexcept
     {
         auto cmp
@@ -411,11 +406,11 @@ class basic_string_view
         if (pos >= size())
             return npos;
 
-        auto it = std::find_if(
-            begin(), end(), [&](const_reference c)
-            {
-                return std::find(s.begin(), s.end(), c, Traits::eq) == s.end();
-            });
+        auto it = std::find_if(begin(), end(), [&](const_reference c)
+                               {
+                                   return std::find(s.begin(), s.end(), c,
+                                                    Traits::eq) == s.end();
+                               });
         if (it == end())
             return npos;
         return std::distance(begin(), it);
@@ -446,11 +441,11 @@ class basic_string_view
             return npos;
 
         auto diff = size() - std::min(size(), pos);
-        auto it = std::find_if(
-            rbegin() + diff, rend(), [&](const_reference c)
-            {
-                return std::find(s.begin(), s.end(), c, Traits::eq) == s.end();
-            });
+        auto it = std::find_if(rbegin() + diff, rend(), [&](const_reference c)
+                               {
+                                   return std::find(s.begin(), s.end(), c,
+                                                    Traits::eq) == s.end();
+                               });
         if (it == rend())
             return npos;
         return size() - 1 - std::distance(rbegin(), it);
@@ -499,8 +494,8 @@ constexpr bool operator==(basic_string_view<Char, Traits> lhs,
 
 template <class Char, class Traits>
 constexpr bool
-operator==(basic_string_view<Char, Traits> lhs,
-           identity<basic_string_view<Char, Traits>> rhs) noexcept
+    operator==(basic_string_view<Char, Traits> lhs,
+               identity<basic_string_view<Char, Traits>> rhs) noexcept
 {
     return lhs.compare(rhs) == 0;
 }
@@ -521,8 +516,8 @@ constexpr bool operator!=(basic_string_view<Char, Traits> lhs,
 
 template <class Char, class Traits>
 constexpr bool
-operator!=(basic_string_view<Char, Traits> lhs,
-           identity<basic_string_view<Char, Traits>> rhs) noexcept
+    operator!=(basic_string_view<Char, Traits> lhs,
+               identity<basic_string_view<Char, Traits>> rhs) noexcept
 {
     return lhs.compare(rhs) != 0;
 }
@@ -585,8 +580,8 @@ constexpr bool operator<=(basic_string_view<Char, Traits> lhs,
 
 template <class Char, class Traits>
 constexpr bool
-operator<=(basic_string_view<Char, Traits> lhs,
-           identity<basic_string_view<Char, Traits>> rhs) noexcept
+    operator<=(basic_string_view<Char, Traits> lhs,
+               identity<basic_string_view<Char, Traits>> rhs) noexcept
 {
     return lhs.compare(rhs) <= 0;
 }
@@ -607,8 +602,8 @@ constexpr bool operator>=(basic_string_view<Char, Traits> lhs,
 
 template <class Char, class Traits>
 constexpr bool
-operator>=(basic_string_view<Char, Traits> lhs,
-           identity<basic_string_view<Char, Traits>> rhs) noexcept
+    operator>=(basic_string_view<Char, Traits> lhs,
+               identity<basic_string_view<Char, Traits>> rhs) noexcept
 {
     return lhs.compare(rhs) >= 0;
 }
@@ -622,8 +617,8 @@ constexpr bool operator>=(identity<basic_string_view<Char, Traits>> lhs,
 
 template <class Char, class Traits>
 std::basic_ostream<Char, Traits>&
-operator<<(std::basic_ostream<Char, Traits>& os,
-           basic_string_view<Char, Traits> str)
+    operator<<(std::basic_ostream<Char, Traits>& os,
+               basic_string_view<Char, Traits> str)
 {
     return os << str.to_string();
 }
@@ -646,7 +641,7 @@ namespace util
 {
 template <class HashAlgorithm, class Char, class Traits>
 typename std::enable_if<is_contiguously_hashable<Char>::value>::type
-hash_append(HashAlgorithm& h, const basic_string_view<Char, Traits>& s)
+    hash_append(HashAlgorithm& h, const basic_string_view<Char, Traits>& s)
 {
     h(s.data(), s.size() * sizeof(Char));
     hash_append(h, s.size());
@@ -654,7 +649,7 @@ hash_append(HashAlgorithm& h, const basic_string_view<Char, Traits>& s)
 
 template <class HashAlgorithm, class Char, class Traits>
 typename std::enable_if<!is_contiguously_hashable<Char>::value>::type
-hash_append(HashAlgorithm& h, const basic_string_view<Char, Traits>& s)
+    hash_append(HashAlgorithm& h, const basic_string_view<Char, Traits>& s)
 {
     for (const auto& c : s)
         hash_append(h, c);
